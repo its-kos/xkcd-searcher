@@ -18,7 +18,7 @@ func main() {
 	var (
 		output io.WriteCloser = os.Stdout
 		err error
-		fails = 0
+		fails, cnt = 0, 0
 	)
 
 	if len(os.Args) > 1 {
@@ -53,14 +53,18 @@ func main() {
 		if err != nil {
 			log.Fatalln("Can't read body: ", err)
 		}
+		
+		if cnt > 0 {
+			fmt.Fprint(output, ",")
+		}
 
-		fmt.Fprint(output, string(body) + ",")
 		_, err = io.Copy(output, bytes.NewBuffer(body))
 		if err != nil {
 			log.Fatalln("Can't write body: ", err)
 		}
-
+	
 		fails = 0
+		cnt++
 		resp.Body.Close()
 	}
 	if _, err = io.Copy(output, strings.NewReader("]")); err != nil {

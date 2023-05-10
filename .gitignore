@@ -20,4 +20,4 @@
 # Go workspace file
 go.work
 
-cmd/xkcd_data.json
+cmd/xkcd-data.json
